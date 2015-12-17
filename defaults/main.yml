@@ -1,2 +1,33 @@
 ---
-# defaults file for roletemplate
+# defaults file for banana
+
+# Versioning
+banana_version: "master"
+# This should be a simple string suitable for use as foldername, etc:
+banana_version_shortname: "banana-{{ banana_version }}"
+
+#Code checkout directory:
+repo_dir: "/opt/repos"
+banana_repo_path: "{{ repo_dir }}/{{ banana_version_shortname }}/banana"
+
+#And ownership (defaults to current login):
+banana_deploy_user: "{{ ansible_user_id }}"
+
+#Install v-env directory:
+default_install_prefix: "/opt"
+banana_venv: "{{ default_install_prefix }}/venvs/{{ banana_version_shortname }}"
+
+# Banana config
+banana_postgres_host: "localhost"
+banana_postgres_username: "postgres"
+banana_mongodb_host: "localhost"
+
+
+# Apache config
+banana_siteconf_file_suffix: "" #Apache 2.2 requires '.conf' suffix, 2.4 doesn't.
+banana_apache_version: "2.4"
+banana_apache_user: "www-data"
+banana_domain: "localhost"
+
+
+

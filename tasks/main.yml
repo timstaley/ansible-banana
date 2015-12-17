@@ -1,2 +1,17 @@
 ---
-# tasks file for roletemplate
+# tasks file for banana
+
+
+- name: Install Apache apt dependencies
+  apt: name={{item}} update_cache=yes cache_valid_time=600
+  with_items: "{{ lookup('file', 'apache-apt-deps.txt').split() }}"
+  sudo: yes
+  tags: apt, apache
+
+- set_fact:
+    banana_apache_version: "2.2"
+  when: ansible_distribution_release == "precise"
+
+- include: banana_install.yml tags=install
+- include: banana_apache_setup.yml tags=apache
+

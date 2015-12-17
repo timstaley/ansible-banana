@@ -1,0 +1,66 @@
+from base import *
+from banana.db import monetdb_list, postgres_list
+
+DEBUG = True
+TEMPLATE_DEBUG = False
+
+#MIDDLEWARE_CLASSES += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+#INSTALLED_APPS += ['debug_toolbar']
+
+STATIC_URL = '/{{ banana_version_shortname }}/static/'
+
+SECRET_KEY = 'foobar'
+
+# Change default flux display prefix / units
+# (Only applies to transients_detail page, currently)
+# from banana.templatetags.units import units_map
+# units_map[None]= units_map['unity'] #(Default)
+# units_map[None]=units_map['milli']
+
+MONETDB_HOST = False
+MONETDB_PORT = 50000
+MONETDB_PASSPHRASE = 'cheeseweb'
+
+POSTGRES_HOST = '{{  banana_postgres_host }}'
+POSTGRES_USERNAME = '{{  banana_postgres_username }}'
+POSTGRES_PASSWORD = POSTGRES_USERNAME
+
+
+for name in postgres_list(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD):
+    DATABASES[ name ] = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': POSTGRES_HOST,
+        'NAME': name,
+        'USER': POSTGRES_USERNAME,
+        'PASSWORD': name,
+        'CONSOLE': False,  # True if you you want sqlconsole queries
+    }
+
+
+
+#for monetdb in monetdb_list(MONETDB_HOST, MONETDB_PORT, MONETDB_PASSPHRASE):
+#    name = monetdb['name']
+#    DATABASES[name] = {
+#        'ENGINE': 'djonet',
+#        'NAME': name,
+#        'USER': name,
+#        'PASSWORD': name,
+#        'HOST': MONETDB_HOST,
+#        'PORT': MONETDB_PORT,
+#        'CONSOLE': True,
+#    }
+
+
+ADMINS += [('Gijs Molenaar', 'bill@microsoft.com'), ]
+
+MONGODB = {
+    "enabled": True,
+    "host": "{{ banana_mongodb_host }}",
+    "port": 27017,
+    "database": "tkp"
+}
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '*',
+]

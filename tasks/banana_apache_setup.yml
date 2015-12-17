@@ -1,0 +1,47 @@
+- name: Enable mod_wsgi, mod_rewrite
+  apache2_module: state=present name={{item}}
+  with_items:
+    - wsgi
+    - rewrite
+  sudo: yes
+  notify: restart apache
+
+- name: Enable mod_version if running 12.04/precise/Apache2.2
+  apache2_module: state=present name=version
+  when: banana_apache_version == "2.2"
+  sudo: yes
+  notify: restart apache
+
+- set_fact:
+    banana_siteconf_file_suffix: ".conf"
+  when: banana_apache_version == "2.2"
+
+- name: Disable default siteconf
+  command: a2dissite 000-default
+  args:
+    removes: /etc/apache2/sites-enabled/000-default.conf
+  sudo: yes
+  #Restart service if init-script has changed:
+  notify:
+    - restart apache
+
+
+- name: Upload templated banana site conf
+  template:
+    src: banana_site.conf.j2
+    dest: "/etc/apache2/sites-available/{{ banana_version_shortname }}{{ banana_siteconf_file_suffix }}"
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  sudo: yes
+  #Restart service if init-script has changed:
+  notify:
+    - restart apache
+
+- name: Enable banana siteconf
+  command: a2ensite {{ banana_version_shortname }}
+  args:
+    creates: /etc/apache2/sites-enabled/{{ banana_version_shortname }}
+  sudo: yes
+  #Restart service if init-script has changed:
+  notify:
+    - restart apache

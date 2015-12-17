@@ -1,0 +1,13 @@
+- hosts: test
+
+  vars:
+    postgresql_databases:
+            - name: "bananademo"
+
+  roles:
+    - timstaley.base
+    - { role: ANXS.postgresql,
+        sudo: true
+        }
+    - { role: ../../banana,
+        }
