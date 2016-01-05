@@ -14,7 +14,7 @@
 
 - set_fact:
     banana_siteconf_file_suffix: ".conf"
-  when: banana_apache_version == "2.2"
+  when: banana_apache_version == "2.4"
 
 - name: Disable default siteconf
   command: a2dissite 000-default
@@ -25,11 +25,36 @@
   notify:
     - restart apache
 
+# Now for a bit of apache virtualhost chicanery
+# This allows us to run multiple versions of banana in parallel, using
+# different url-subdirectories for each version:
 
-- name: Upload templated banana site conf
+- name: Create 'banana-subsites' apache confdir
+  file:
+    path: "/etc/apache2/banana-subsites"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  sudo: yes
+
+
+- name: Upload top-level banana virtualhost definition conf
   template:
-    src: banana_site.conf.j2
-    dest: "/etc/apache2/sites-available/{{ banana_version_shortname }}{{ banana_siteconf_file_suffix }}"
+    src: banana_vhost.conf.j2
+    dest: "/etc/apache2/sites-available/{{ banana_apache_sitename }}{{ banana_siteconf_file_suffix }}"
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  sudo: yes
+  #Restart service if init-script has changed:
+  notify:
+    - restart apache
+
+
+- name: Upload version-specific subsite / subdirectory configuration
+  template:
+    src: banana_subsite.conf.j2
+    dest: "/etc/apache2/banana-subsites/{{ banana_version_shortname }}.conf"
     owner: root
     mode: "u=rw,g=r,o=r"
   sudo: yes
@@ -38,9 +63,9 @@
     - restart apache
 
 - name: Enable banana siteconf
-  command: a2ensite {{ banana_version_shortname }}
+  command: a2ensite {{ banana_apache_sitename }}
   args:
-    creates: /etc/apache2/sites-enabled/{{ banana_version_shortname }}
+    creates: "/etc/apache2/sites-enabled/{{ banana_apache_sitename }}{{ banana_siteconf_file_suffix }}"
   sudo: yes
   #Restart service if init-script has changed:
   notify:

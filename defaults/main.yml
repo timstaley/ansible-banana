@@ -23,11 +23,22 @@ banana_postgres_username: "postgres"
 banana_mongodb_host: "localhost"
 
 
-# Apache config
-banana_siteconf_file_suffix: "" #Apache 2.2 requires '.conf' suffix, 2.4 doesn't.
-banana_apache_version: "2.4"
+# Apache config:
+# We use a top level virtualhost, with per-version subdirectories to get e.g.
+# http://banana.localhost/banana-master
+
+#For use with e.g. `sudo a2ensite {{ banana_apache_sitename }}`
+banana_apache_sitename: "banana"
+# The user that runs the wsgi daemon process:
 banana_apache_user: "www-data"
+# The wsgi daemon process name:
+banana_apache_process: "{{ banana_version_shortname }}"
+# The site domain
 banana_domain: "localhost"
+# The full banana subdomain
+banana_subdomain: "banana.{{ banana_domain }}"
+# The subdirectory used for this specific banana version
+banana_url_subdir: "{{ banana_version_shortname }}"
 
 
 

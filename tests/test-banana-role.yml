@@ -10,4 +10,10 @@
         sudo: true
         }
     - { role: ../../banana,
+        banana_version: "master",
+        repo_dir: /opt/repofoo
+        }
+    - { role: ../../banana,
+        banana_version: "release-2",
+        repo_dir: /opt/repofoo
         }

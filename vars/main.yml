@@ -1,2 +1,7 @@
 ---
 # vars file for banana
+
+banana_apache_version: "2.4"
+# Apache 2.2 requires '.conf' suffix, 2.4 doesn't.
+# We autoconfigure this based on ubuntu-version in main.yml, currently.
+banana_siteconf_file_suffix: ""

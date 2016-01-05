@@ -1,0 +1,10 @@
+# Apache2 site-conf for Banana
+<VirtualHost *:80>
+    ServerName {{ banana_domain }}
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    Include banana-subsites/*.conf
+
+
+</VirtualHost>
