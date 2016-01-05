@@ -29,6 +29,8 @@ banana_mongodb_host: "localhost"
 
 #For use with e.g. `sudo a2ensite {{ banana_apache_sitename }}`
 banana_apache_sitename: "banana"
+#A directory we create under /etc/apache for defining url-subdirectories
+banana_apache_subsite_dir: "banana-subsites"
 # The user that runs the wsgi daemon process:
 banana_apache_user: "www-data"
 # The wsgi daemon process name:

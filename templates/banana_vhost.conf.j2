@@ -4,7 +4,7 @@
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-    Include banana-subsites/*.conf
+    Include {{ banana_apache_subsite_dir }}/*.conf
 
 
 </VirtualHost>

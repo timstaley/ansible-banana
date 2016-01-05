@@ -31,7 +31,7 @@
 
 - name: Create 'banana-subsites' apache confdir
   file:
-    path: "/etc/apache2/banana-subsites"
+    path: "/etc/apache2/{{ banana_apache_subsite_dir }}"
     state: directory
     mode: 0755
     owner: root
@@ -54,7 +54,7 @@
 - name: Upload version-specific subsite / subdirectory configuration
   template:
     src: banana_subsite.conf.j2
-    dest: "/etc/apache2/banana-subsites/{{ banana_version_shortname }}.conf"
+    dest: "/etc/apache2/{{ banana_apache_subsite_dir }}/{{ banana_version_shortname }}.conf"
     owner: root
     mode: "u=rw,g=r,o=r"
   sudo: yes
