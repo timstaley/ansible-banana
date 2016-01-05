@@ -23,7 +23,7 @@ MONETDB_PASSPHRASE = 'cheeseweb'
 
 POSTGRES_HOST = '{{  banana_postgres_host }}'
 POSTGRES_USERNAME = '{{  banana_postgres_username }}'
-POSTGRES_PASSWORD = POSTGRES_USERNAME
+POSTGRES_PASSWORD = '{{  banana_postgres_password }}'
 
 
 for name in postgres_list(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD):
@@ -32,7 +32,7 @@ for name in postgres_list(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD):
         'HOST': POSTGRES_HOST,
         'NAME': name,
         'USER': POSTGRES_USERNAME,
-        'PASSWORD': name,
+        'PASSWORD': POSTGRES_PASSWORD,
         'CONSOLE': False,  # True if you you want sqlconsole queries
     }
 

@@ -1,6 +1,6 @@
 # Defines a subdirectory of banana.domainname, for a specific version of banana.
 
-WSGIDaemonProcess {{ banana_apache_process }} user=www-data python-path={{ banana_repo_path }}
+WSGIDaemonProcess {{ banana_apache_process }} user={{ banana_apache_user }} python-path={{ banana_repo_path }}
 
 WSGIScriptAlias /{{ banana_url_subdir }} {{ banana_repo_path }}/project/wsgi.py
 <Location /{{ banana_url_subdir }}>

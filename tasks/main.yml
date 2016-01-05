@@ -1,6 +1,9 @@
 ---
 # tasks file for banana
 
+- set_fact:
+    banana_apache_version: "2.2"
+  when: ansible_distribution_release == "precise"
 
 - name: Install Apache apt dependencies
   apt: name={{item}} update_cache=yes cache_valid_time=600
@@ -8,10 +11,16 @@
   sudo: yes
   tags: apt, apache
 
-- set_fact:
-    banana_apache_version: "2.2"
-  when: ansible_distribution_release == "precise"
+- name: Create bananaserve user
+  user:
+    name: "{{ banana_apache_user }}"
+    shell: "/bin/bash"
+  sudo: yes
 
-- include: banana_install.yml tags=install
-- include: banana_apache_setup.yml tags=apache
+
+- include: banana_install.yml
+  tags: install
+
+- include: banana_apache_setup.yml
+  tags: apache
 

@@ -17,10 +17,13 @@ banana_deploy_user: "{{ ansible_user_id }}"
 default_install_prefix: "/opt"
 banana_venv: "{{ default_install_prefix }}/venvs/{{ banana_version_shortname }}"
 
-# Banana config
+# Banana database (postgres) config
 banana_postgres_host: "localhost"
-banana_postgres_username: "postgres"
+banana_postgres_username: "bananaserve"
+banana_postgres_password: "foobar"
 banana_mongodb_host: "localhost"
+banana_databases:
+  - bananademo
 
 
 # Apache config:
@@ -32,7 +35,7 @@ banana_apache_sitename: "banana"
 #A directory we create under /etc/apache for defining url-subdirectories
 banana_apache_subsite_dir: "banana-subsites"
 # The user that runs the wsgi daemon process:
-banana_apache_user: "www-data"
+banana_apache_user: "{{ banana_postgres_username }}"
 # The wsgi daemon process name:
 banana_apache_process: "{{ banana_version_shortname }}"
 # The site domain

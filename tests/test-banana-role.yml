@@ -1,8 +1,34 @@
 - hosts: test
 
   vars:
+    postgresql_pg_hba_default: []
+    postgresql_pg_hba_custom:
+      - { type: local, database: all, user: 'postgres', address: '',
+          method: 'peer',
+          comment: ''}
+      - { type: local, database: all, user: all, address: '',
+          method: 'peer',
+          comment: ''}
+      - { type: host,  database: all, user: all,
+          address: '127.0.0.1/32',
+          method: 'md5',
+          comment: 'IPv4 local connections:' }
+      - { type: host,  database: all, user: all,
+          address: '::1/128',
+          method: 'md5',
+          comment: 'IPv6 local connections:' }
+
+    postgresql_users:
+      - name: "{{ banana_postgres_username }}"
+        pass: "{{ banana_postgres_password }}"
+
+      - name: "{{ banana_deploy_user }}"
+        pass: "baz"
+
     postgresql_databases:
-            - name: "bananademo"
+      - name: "bananademodb"
+        owner: "{{ banana_deploy_user }}"
+
 
   roles:
     - timstaley.base
@@ -13,7 +39,7 @@
         banana_version: "master",
         repo_dir: /opt/repofoo
         }
-    - { role: ../../banana,
-        banana_version: "release-2",
-        repo_dir: /opt/repofoo
-        }
+#    - { role: ../../banana,
+#        banana_version: "release-2",
+#        repo_dir: /opt/repofoo
+#        }

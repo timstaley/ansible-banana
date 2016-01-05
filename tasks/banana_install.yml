@@ -13,15 +13,12 @@
   tags: apt
 
 
-
 - name: Create repo / venv dir with correct permissions
   file:
     path: "{{item}}"
     state: directory
-    mode: 0755
+    mode: "u=rwx,g=rx,o=rx"
     owner: "{{ banana_deploy_user }}"
-    group: "{{ banana_apache_user }}"
-#    recurse: true
   with_items:
     - "{{ banana_repo_path }}"
     - "{{ banana_venv }}"
@@ -36,6 +33,7 @@
     version: "{{ banana_version }}"
   become: yes
   become_user: "{{ banana_deploy_user }}"
+  become_method: sudo
   register: banana_repo_clone_result
   
   
@@ -70,7 +68,6 @@
     src: banana_local.py.j2
     dest: "{{ banana_repo_path }}/project/settings/local.py"
     owner: "{{ banana_deploy_user }}"
-    group: "{{ banana_apache_user }}"
     mode: "u=rw,g=r,o=r"
   sudo: yes
   #Restart service if init-script has changed:
@@ -82,7 +79,6 @@
     src: banana.wsgi.j2
     dest: "{{ banana_repo_path }}/project/wsgi.py"
     owner: "{{ banana_deploy_user }}"
-    group: "{{ banana_apache_user }}"
     mode: "u=rw,g=r,o=r"
   sudo: yes
   #Restart service if init-script has changed:
