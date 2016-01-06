@@ -7,7 +7,12 @@ WSGIScriptAlias /{{ banana_url_subdir }} {{ banana_repo_path }}/project/wsgi.py
     WSGIProcessGroup {{ banana_apache_process }}
     WSGIApplicationGroup %{GLOBAL}
 </Location>
-Alias /{{ banana_url_subdir }}/static/ {{ banana_repo_path }}/static/
+
+{%  if  banana_url_subdir %}
+    Alias /{{ banana_url_subdir }}/static/ {{ banana_repo_path }}/static/
+{%  else %}
+    Alias /static/ {{ banana_repo_path }}/static/
+{% endif %}
 <Directory {{ banana_repo_path }}/project/ >
     <Files wsgi.py>
         <IfVersion < 2.4>

@@ -7,7 +7,12 @@ TEMPLATE_DEBUG = False
 #MIDDLEWARE_CLASSES += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 #INSTALLED_APPS += ['debug_toolbar']
 
+
+{%  if  banana_url_subdir %}
 STATIC_URL = '/{{ banana_url_subdir }}/static/'
+{%  else %}
+STATIC_URL = '/static/'
+{% endif %}
 
 SECRET_KEY = 'foobar'
 

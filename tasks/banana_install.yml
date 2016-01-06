@@ -1,7 +1,7 @@
 - name: Install banana apt dependencies.
   apt: name={{item}} update_cache=yes cache_valid_time=600
   with_items: "{{ lookup('file', 'banana-apt-deps.txt').split() }}"
-  sudo: yes
+  become: yes
   tags: apt
 
 - name: Install banana build-dependencies.
@@ -9,7 +9,7 @@
   with_items:
     - python-numpy
     - python-matplotlib
-  sudo: yes
+  become: yes
   tags: apt
 
 
@@ -22,7 +22,7 @@
   with_items:
     - "{{ banana_repo_path }}"
     - "{{ banana_venv }}"
-  sudo: yes
+  become: yes
 
 
 - name: Clone banana repo
@@ -33,7 +33,6 @@
     version: "{{ banana_version }}"
   become: yes
   become_user: "{{ banana_deploy_user }}"
-  become_method: sudo
   register: banana_repo_clone_result
   
   
@@ -69,7 +68,7 @@
     dest: "{{ banana_repo_path }}/project/settings/local.py"
     owner: "{{ banana_deploy_user }}"
     mode: "u=rw,g=r,o=r"
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache
@@ -80,7 +79,7 @@
     dest: "{{ banana_repo_path }}/project/wsgi.py"
     owner: "{{ banana_deploy_user }}"
     mode: "u=rw,g=r,o=r"
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache

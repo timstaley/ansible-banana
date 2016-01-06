@@ -3,13 +3,17 @@
   vars_files:
     - postgres-test-vars.yml
 
+  vars:
+    - trap_user: "trapdemo"
+
   roles:
     - timstaley.base
     - { role: ANXS.postgresql,
-        sudo: true
+        become: true
         }
     - { role: ../../banana,
         banana_version: "master",
+#        banana_url_subdir: "",
         repo_dir: /opt/repofoo
         }
 #    - { role: ../../banana,

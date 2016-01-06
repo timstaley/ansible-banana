@@ -3,13 +3,13 @@
   with_items:
     - wsgi
     - rewrite
-  sudo: yes
+  become: yes
   notify: restart apache
 
 - name: Enable mod_version if running 12.04/precise/Apache2.2
   apache2_module: state=present name=version
   when: banana_apache_version == "2.2"
-  sudo: yes
+  become: yes
   notify: restart apache
 
 - set_fact:
@@ -20,7 +20,7 @@
   command: a2dissite 000-default
   args:
     removes: /etc/apache2/sites-enabled/000-default.conf
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache
@@ -36,7 +36,7 @@
     mode: 0755
     owner: root
     group: root
-  sudo: yes
+  become: yes
 
 
 - name: Upload top-level banana virtualhost definition conf
@@ -45,7 +45,7 @@
     dest: "/etc/apache2/sites-available/{{ banana_apache_sitename }}{{ banana_siteconf_file_suffix }}"
     owner: root
     mode: "u=rw,g=r,o=r"
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache
@@ -57,7 +57,7 @@
     dest: "/etc/apache2/{{ banana_apache_subsite_dir }}/{{ banana_version_shortname }}.conf"
     owner: root
     mode: "u=rw,g=r,o=r"
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache
@@ -66,7 +66,7 @@
   command: a2ensite {{ banana_apache_sitename }}
   args:
     creates: "/etc/apache2/sites-enabled/{{ banana_apache_sitename }}{{ banana_siteconf_file_suffix }}"
-  sudo: yes
+  become: yes
   #Restart service if init-script has changed:
   notify:
     - restart apache
