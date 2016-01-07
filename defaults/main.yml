@@ -8,7 +8,7 @@ banana_version_shortname: "banana-{{ banana_version }}"
 
 #Code checkout directory:
 repo_dir: "/opt/repos"
-banana_repo_path: "{{ repo_dir }}/{{ banana_version_shortname }}/banana"
+banana_repo_path: "{{ repo_dir }}/{{ banana_version_shortname }}"
 
 #And ownership (defaults to current login):
 banana_deploy_user: "{{ ansible_user_id }}"

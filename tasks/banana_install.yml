@@ -24,6 +24,13 @@
     - "{{ banana_venv }}"
   become: yes
 
+- name: Ensure latest version of pip for venv
+  pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ banana_venv }}"
+  become: yes
+  become_user: "{{ banana_deploy_user }}"
 
 - name: Clone banana repo
   git:
